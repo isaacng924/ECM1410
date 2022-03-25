@@ -18,7 +18,6 @@ import java.util.HashMap;
 public class BadCyclingPortal implements CyclingPortalInterface {
 
 	static int TeamIdNum = 0;
-	static int RiderIdNum = 0;
 	static int RaceNum = 0;
 
 	ArrayList<race> Race = new ArrayList<>();
@@ -30,10 +29,8 @@ public class BadCyclingPortal implements CyclingPortalInterface {
 	@Override
 	public int[] getRaceIds() {
 		int[] raceids = new int[RaceNum];
-		int x = 0;
-		for(Integer n: raceids){
-			n = Race.get(x).getRaceId();
-			x++;
+		for(int n = 0; n < raceids.length; n++){
+			raceids[n] = Race.get(n).getRaceId();
 		}
 		return raceids;
 	}
@@ -43,7 +40,7 @@ public class BadCyclingPortal implements CyclingPortalInterface {
 		race newRace = new race(name, description);
 		Race.add(newRace);
 		RaceNum++;
-		return newRace.raceId;
+		return newRace.getRaceId();
 	}
 
 	@Override
@@ -208,9 +205,8 @@ public class BadCyclingPortal implements CyclingPortalInterface {
 	public int createRider(int teamID, String name, int yearOfBirth)
 			throws IDNotRecognisedException, IllegalArgumentException {
 		Rider obj = new Rider(teamID, name, yearOfBirth);
-		riders.put(RiderIdNum, obj);
-		RiderIdNum++;
-		return RiderIdNum - 1;
+		riders.put(obj.getRiderId(), obj);
+		return obj.getRiderId();
 	}
 
 	@Override
@@ -222,19 +218,16 @@ public class BadCyclingPortal implements CyclingPortalInterface {
 	public void registerRiderResultsInStage(int stageId, int riderId, LocalTime... checkpoints)
 			throws IDNotRecognisedException, DuplicatedResultException, InvalidCheckpointsException,
 			InvalidStageStateException {
-		// TODO Auto-generated method stub
-
+		riders.get(riderId).addStageTime(stageId, checkpoints);
 	}
 
 	@Override
 	public LocalTime[] getRiderResultsInStage(int stageId, int riderId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		return riders.get(riderId).getStageTime(stageId);
 	}
 
 	@Override
 	public LocalTime getRiderAdjustedElapsedTimeInStage(int stageId, int riderId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -246,7 +239,14 @@ public class BadCyclingPortal implements CyclingPortalInterface {
 
 	@Override
 	public int[] getRidersRankInStage(int stageId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
+		int[] x = new int[riders.size()];
+		Rider[] y = new Rider[riders.size()];
+		int z = 0;
+		for(int r: riders.keySet()){
+			y[z] = riders.get(r);
+			z++;
+		}
+
 		return null;
 	}
 

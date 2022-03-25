@@ -3,11 +3,11 @@ package cycling;
 import java.util.ArrayList;
 
 public class race {
-    public int raceId;
-    public static int RaceCount = 0;
-    public String RaceName;
-    public String RaceDescription;
-    public ArrayList<Stage> stages = new ArrayList<>();
+    int raceId;
+    static int RaceCount = 0;
+    String RaceName;
+    String RaceDescription;
+    ArrayList<Stage> stages = new ArrayList<>();
 
     public race(String name, String description) {
         RaceName = name;

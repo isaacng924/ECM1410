@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Stage {
-    public static int StageCount = 0;
-    public int stageId;
+    static int StageCount = 0;
+    int stageId;
     String stageName;
     String description;
     double length;

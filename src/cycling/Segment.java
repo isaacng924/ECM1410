@@ -1,12 +1,12 @@
 package cycling;
 
 public class Segment {
-    public static int SegmentCount = 0;
-    public int segmentId;
-    public double Location;
-    public SegmentType Type;
-    public double AverageGradient;
-    public double Length;
+    static int SegmentCount = 0;
+    int segmentId;
+    double Location;
+    SegmentType Type;
+    double AverageGradient;
+    double Length;
 
     public Segment(double location,SegmentType type, double averageGradient, double length){
         Location = location;
