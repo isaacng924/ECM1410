@@ -42,10 +42,13 @@ public class Rider {
         return x;
     }
 
-    public void compareFinishingTime(){
-        for(LocalTime[] t: stageTime.values()){
-            t[t.length-1] = null;
-        }
-
+    public void removeStageTime(int stageIds){
+        stageTime.remove(stageIds);
     }
+
+    public LocalTime getElapsedTime(int stageId){
+        return getStageTime(stageId)[getStageTime(stageId).length - 1];
+    }
+
 }
+

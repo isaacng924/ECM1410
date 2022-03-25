@@ -233,17 +233,16 @@ public class BadCyclingPortal implements CyclingPortalInterface {
 
 	@Override
 	public void deleteRiderResultsInStage(int stageId, int riderId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
+		riders.get(riderId).removeStageTime(stageId);
 
 	}
 
 	@Override
 	public int[] getRidersRankInStage(int stageId) throws IDNotRecognisedException {
-		int[] x = new int[riders.size()];
-		Rider[] y = new Rider[riders.size()];
+		LocalTime[] x = new LocalTime[riders.size()];
 		int z = 0;
-		for(int r: riders.keySet()){
-			y[z] = riders.get(r);
+		for(Rider r: riders.values()){
+			x[z] = r.getElapsedTime(stageId);
 			z++;
 		}
 
