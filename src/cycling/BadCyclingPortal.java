@@ -3,8 +3,8 @@ package cycling;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 /**
@@ -19,25 +19,21 @@ public class BadCyclingPortal implements CyclingPortalInterface {
 
 	static int TeamIdNum = 0;
 	static int RiderIdNum = 0;
-	static int RaceIdNum = 0;
-	static int StageIdNum = 0;
-	static int SegmentIdNum = 0;
+	static int RaceNum = 0;
 
+	ArrayList<race> Race = new ArrayList<>();
 	HashMap<Integer, Team> teams = new HashMap<Integer, Team>();
 	HashMap<Integer, Rider> riders = new HashMap<Integer, Rider>();
-	HashMap<Integer, race> races = new HashMap<Integer, race>();
-	HashMap<Stage, Integer> stage = new HashMap<Stage, Integer>();
 	HashMap<Integer, Stage> stageIds = new HashMap<Integer, Stage>();
-	HashMap<Segment, Integer> segment = new HashMap<Segment, Integer>();
 	HashMap<Integer, Segment> segmentIds = new HashMap<Integer, Segment>();
 
 	@Override
 	public int[] getRaceIds() {
-		int[] raceids = new int[races.size()];
-		int n = 0;
-		for(int i:races.keySet()){
-			raceids[n] = i;
-			n++;
+		int[] raceids = new int[RaceNum];
+		int x = 0;
+		for(Integer n: raceids){
+			n = Race.get(x).getRaceId();
+			x++;
 		}
 		return raceids;
 	}
@@ -45,34 +41,36 @@ public class BadCyclingPortal implements CyclingPortalInterface {
 	@Override
 	public int createRace(String name, String description) throws IllegalNameException, InvalidNameException {
 		race newRace = new race(name, description);
-		races.put(RaceIdNum, newRace);
-		RaceIdNum++;
-		return RaceIdNum - 1;
+		Race.add(newRace);
+		RaceNum++;
+		return newRace.raceId;
 	}
 
 	@Override
 	public String viewRaceDetails(int raceId) throws IDNotRecognisedException {
 		String details = null;
-		race newRace = races.get(raceId);
-		details = newRace.getRace();
+		for(race n: Race){
+			if(n.getRaceId() == raceId){
+				details = n.toString();
+			}
+		}
 		return details;
 	}
 
 	@Override
 	public void removeRaceById(int raceId) throws IDNotRecognisedException {
-		races.remove(raceId);
-
+		Race.removeIf(n -> n.getRaceId() == raceId);
 	}
 
 	@Override
 	public int getNumberOfStages(int raceId) throws IDNotRecognisedException {
-		int n = 0;
-		for( Stage i: stage.keySet() ){
-			if(stage.get(i) == raceId){
-				n++;
+		int x = 0;
+		for(race n: Race){
+			if(n.getRaceId() == raceId){
+				x = n.getNumberOfStages();
 			}
 		}
-		return n;
+		return x;
 	}
 
 	@Override
@@ -80,21 +78,28 @@ public class BadCyclingPortal implements CyclingPortalInterface {
 			StageType type)
 			throws IDNotRecognisedException, IllegalNameException, InvalidNameException, InvalidLengthException {
 		Stage obj = new Stage(stageName, description, length, startTime, type);
-		stage.put(obj, raceId);
-		stageIds.put(StageIdNum, obj);
-		StageIdNum++;
-		return StageIdNum - 1;
+		for(race n: Race){
+			if(n.getRaceId() == raceId){
+				n.addStage(obj);
+			}
+		}
+		stageIds.put(obj.stageId, obj);
+		return obj.getId();
 	}
 
 	@Override
 	public int[] getRaceStages(int raceId) throws IDNotRecognisedException {
-		int[] stages = new int[stageIds.size()];
-		int n = 0;
-		for(int i:stageIds.keySet()){
-			stages[n] = i;
-			n++;
+		int[] z = new int[getNumberOfStages(raceId)];
+		for (race n : Race) {
+			if (n.getRaceId() == raceId) {
+				int i = 0;
+				for(Stage x :n.getStages()){
+					z[i] = x.getId();
+					i++;
+				}
+			}
 		}
-		return stages;
+		return z;
 	}
 
 	@Override
@@ -104,8 +109,10 @@ public class BadCyclingPortal implements CyclingPortalInterface {
 
 	@Override
 	public void removeStageById(int stageId) throws IDNotRecognisedException {
+		for(race n: Race){
+			n.removeStage(stageIds.get(stageId));
+		}
 		stageIds.remove(stageId);
-
 	}
 
 	@Override
@@ -113,23 +120,28 @@ public class BadCyclingPortal implements CyclingPortalInterface {
 			Double length) throws IDNotRecognisedException, InvalidLocationException, InvalidStageStateException,
 			InvalidStageTypeException {
 		Segment obj = new Segment(location, type, averageGradient, length);
-		segment.put(obj, stageId);
-		segmentIds.put(SegmentIdNum, obj);
-		SegmentIdNum++;
-		return SegmentIdNum - 1;
+		stageIds.get(stageId).addSegment(obj);
+		segmentIds.put(obj.segmentId, obj);
+		return obj.segmentId;
 	}
 
 	@Override
 	public int addIntermediateSprintToStage(int stageId, double location) throws IDNotRecognisedException,
 			InvalidLocationException, InvalidStageStateException, InvalidStageTypeException {
-		// TODO Auto-generated method stub
-		return 0;
+		Segment obj = new Segment(location, SegmentType.SPRINT);
+		stageIds.get(stageId).addSegment(obj);
+		segmentIds.put(obj.segmentId, obj);
+		return obj.segmentId;
 	}
 
 	@Override
 	public void removeSegment(int segmentId) throws IDNotRecognisedException, InvalidStageStateException {
-		// TODO Auto-generated method stub
-
+		for(race n: Race){
+			for(Stage i: n.getStages()){
+				i.removeSegment(segmentIds.get(segmentId));
+			}
+		}
+		segmentIds.remove(segmentId);
 	}
 
 	@Override
@@ -140,8 +152,13 @@ public class BadCyclingPortal implements CyclingPortalInterface {
 
 	@Override
 	public int[] getStageSegments(int stageId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		int[] z = new int[stageIds.get(stageId).getNumOfSegment()];
+		int i = 0;
+		for(Segment x: stageIds.get(stageId).getSegments()){
+			z[i] = x.getSegmentId();
+			i++;
+		}
+		return z;
 	}
 
 	@Override
