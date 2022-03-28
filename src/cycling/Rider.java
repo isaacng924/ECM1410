@@ -46,9 +46,5 @@ public class Rider {
         stageTime.remove(stageIds);
     }
 
-    public LocalTime getElapsedTime(int stageId){
-        return getStageTime(stageId)[getStageTime(stageId).length - 1];
-    }
-
 }
 

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 
@@ -239,14 +240,31 @@ public class BadCyclingPortal implements CyclingPortalInterface {
 
 	@Override
 	public int[] getRidersRankInStage(int stageId) throws IDNotRecognisedException {
-		LocalTime[] x = new LocalTime[riders.size()];
-		int z = 0;
-		for(Rider r: riders.values()){
-			x[z] = r.getElapsedTime(stageId);
-			z++;
+		StageResult[] results = StageResult.getResultInStage(stageId);
+		int[] RiderRanks = new int[results.length];
+		Arrays.fill(RiderRanks, -1);
+		for(StageResult r: results){
+			for(int n = 0; n < RiderRanks.length; n++){
+				if(RiderRanks[n] == -1){
+					RiderRanks[n] = r.getRider();
+					break;
+				}
+				else if(r.getTotalElapsed().isBefore(StageResult.getResult(stageId, RiderRanks[n]).getTotalElapsed())){
+					int t;
+					int p = r.getRider();
+					for(int j = n; j < RiderRanks.length; j++){
+						t= RiderRanks[j];
+						RiderRanks[j] = p;
+						p = t;
+						if(p == -1){
+							break;
+						}
+					}
+					break;
+				}
+			}
 		}
-
-		return null;
+		return RiderRanks;
 	}
 
 	@Override
