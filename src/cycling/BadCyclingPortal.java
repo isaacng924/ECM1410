@@ -220,6 +220,7 @@ public class BadCyclingPortal implements CyclingPortalInterface {
 			throws IDNotRecognisedException, DuplicatedResultException, InvalidCheckpointsException,
 			InvalidStageStateException {
 		riders.get(riderId).addStageTime(stageId, checkpoints);
+		StageResult r = new StageResult(riderId, stageId, checkpoints);
 	}
 
 	@Override
@@ -229,6 +230,7 @@ public class BadCyclingPortal implements CyclingPortalInterface {
 
 	@Override
 	public LocalTime getRiderAdjustedElapsedTimeInStage(int stageId, int riderId) throws IDNotRecognisedException {
+		
 		return null;
 	}
 
@@ -275,8 +277,51 @@ public class BadCyclingPortal implements CyclingPortalInterface {
 
 	@Override
 	public int[] getRidersPointsInStage(int stageId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		int[] RiderPoints = new int[getRidersRankInStage(stageId).length];
+		StageType n = stageIds.get(stageId).getStageType();
+		switch (n){
+			case FLAT -> {
+				int[] FlatPoints = new int[]{50, 30, 20, 18, 16, 14, 12, 10, 8, 7, 6, 5, 4, 3, 2};
+				for(int i = 0; i < 15; i++){
+					RiderPoints[i] = FlatPoints[i];
+				}
+				for(int i = 15; i < getRidersRankInStage(stageId).length; i++){
+					RiderPoints[i] = 0;
+				}
+				break;
+			}
+			case MEDIUM_MOUNTAIN -> {
+				int[] MediumPoints = new int[]{30, 25, 22, 19, 17, 15, 13, 11, 9, 7, 6, 5, 4, 3, 2};
+				for(int i = 0; i < 15; i++){
+					RiderPoints[i] = MediumPoints[i];
+				}
+				for(int i = 15; i < getRidersRankInStage(stageId).length; i++){
+					RiderPoints[i] = 0;
+				}
+				break;
+			}
+			case HIGH_MOUNTAIN -> {
+				int[] HighPoints = new int[]{20, 17, 15, 13, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+				for(int i = 0; i < 15; i++){
+					RiderPoints[i] = HighPoints[i];
+				}
+				for(int i = 15; i < getRidersRankInStage(stageId).length; i++){
+					RiderPoints[i] = 0;
+				}
+				break;
+			}
+			case TT -> {
+				int[] TTPoints = new int[]{20, 17, 15, 13, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+				for(int i = 0; i < 15; i++){
+					RiderPoints[i] = TTPoints[i];
+				}
+				for(int i = 15; i < getRidersRankInStage(stageId).length; i++){
+					RiderPoints[i] = 0;
+				}
+			}
+
+		}
+		return RiderPoints;
 	}
 
 	@Override

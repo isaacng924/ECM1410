@@ -20,9 +20,6 @@ public class StageResult {
         return stageId;
     }
     public int getRider(){return riderId;}
-    public int[] getRank(){
-        return null;
-    }
 
     public static StageResult getResult(int stageId, int riderId){
         for(StageResult r: allResults){
@@ -68,6 +65,40 @@ public class StageResult {
     public LocalTime getTotalElapsed(){
         LocalTime[] t = time;
         return StageResult.getElapsed(t[0], t[t.length-1]);
+    }
+
+    public LocalTime[] getCheckpoints(){
+        LocalTime[] out = new LocalTime[time.length-1];
+        for(int n = 0; n< time.length-1; n++){
+            out[n] = getElapsed(time[n], time[n+1]);
+        }
+        return out;
+    }
+
+    public LocalTime adjustedCheckpoint(int i){
+        for(int n = 0; n < allResults.size(); n++){
+            StageResult r = allResults.get(n);
+            if(r.getRider() == getRider() && r.getStage() == getStage()){
+                continue;
+            }
+            LocalTime t1 = getCheckpoints()[i];
+            LocalTime t2 = r.getCheckpoints()[i];
+            if(t1.until(t2, ChronoUnit.SECONDS) < 1){
+                return r.adjustedCheckpoint(i);
+            }
+            else {
+                return t1;
+            }
+        }
+        return null;
+    }
+
+    public LocalTime[] adjustedCheckpoints(){
+        LocalTime[] adjusted = getCheckpoints();
+        for(int i = 0; i < adjusted.length; i++ ){
+            adjusted[i] = adjustedCheckpoint(i);
+        }
+        return adjusted;
     }
 
 }
