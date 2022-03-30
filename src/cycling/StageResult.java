@@ -5,8 +5,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 public class StageResult {
-    int riderId;
-    int stageId;
+    static int riderId;
+    static int stageId;
     static LocalTime[] time;
     static ArrayList<StageResult> allResults = new ArrayList<StageResult>();
 
@@ -20,6 +20,7 @@ public class StageResult {
         return stageId;
     }
     public int getRider(){return riderId;}
+    public LocalTime[] getTime(){return time;}
 
     public static StageResult getResult(int stageId, int riderId){
         for(StageResult r: allResults){
@@ -43,7 +44,7 @@ public class StageResult {
         return n;
     }
 
-    public StageResult[] getRiderResult(int riderId){
+    public static StageResult[] getRiderResult(int riderId){
         ArrayList<StageResult> r = new ArrayList<StageResult>(allResults);
         r.removeIf(i -> i.getRider() != riderId);
         StageResult[] riderResult = new StageResult[r.size()];
@@ -53,7 +54,7 @@ public class StageResult {
         return riderResult;
     }
 
-    public static LocalTime getElapsed(LocalTime t1, LocalTime t2){
+    public LocalTime getElapsed(LocalTime t1, LocalTime t2){
         int h = (int)t1.until(t2, ChronoUnit.HOURS);
         int m = (int)t1.until(t2, ChronoUnit.MINUTES);
         int s = (int)t1.until(t2, ChronoUnit.SECONDS);
@@ -64,7 +65,7 @@ public class StageResult {
 
     public LocalTime getTotalElapsed(){
         LocalTime[] t = time;
-        return StageResult.getElapsed(t[0], t[t.length-1]);
+        return getElapsed(t[0], t[t.length-1]);
     }
 
     public LocalTime[] getCheckpoints(){

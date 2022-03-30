@@ -230,8 +230,10 @@ public class BadCyclingPortal implements CyclingPortalInterface {
 
 	@Override
 	public LocalTime getRiderAdjustedElapsedTimeInStage(int stageId, int riderId) throws IDNotRecognisedException {
-		
-		return null;
+		StageResult r = StageResult.getResult(stageId, riderId);
+		LocalTime[] t = r.adjustedCheckpoints();
+		LocalTime[] t2 = r.getTime();
+		return r.getElapsed(t2[0], t[t.length-1]);
 	}
 
 	@Override
@@ -271,8 +273,15 @@ public class BadCyclingPortal implements CyclingPortalInterface {
 
 	@Override
 	public LocalTime[] getRankedAdjustedElapsedTimesInStage(int stageId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		LocalTime[] t = new	LocalTime[riders.size()];
+		int n = 0;
+		int[] x = getRidersRankInStage(stageId);
+		for(Rider r: riders.values()){
+			t[n] = getRiderAdjustedElapsedTimeInStage(stageId, x[n]);
+			n++;
+		}
+
+		return t;
 	}
 
 	@Override
