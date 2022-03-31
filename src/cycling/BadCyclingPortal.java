@@ -26,6 +26,8 @@ public class BadCyclingPortal implements CyclingPortalInterface {
 	HashMap<Integer, Rider> riders = new HashMap<Integer, Rider>();
 	HashMap<Integer, Stage> stageIds = new HashMap<Integer, Stage>();
 	HashMap<Integer, Segment> segmentIds = new HashMap<Integer, Segment>();
+	HashMap<LocalTime, Rider> riderLocalTimeHashMap = new HashMap<LocalTime, Rider>();
+
 
 	@Override
 	public int[] getRaceIds() {
@@ -365,8 +367,27 @@ public class BadCyclingPortal implements CyclingPortalInterface {
 
 	@Override
 	public LocalTime[] getGeneralClassificationTimesInRace(int raceId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		race r = Race.get(raceId);
+		Stage[] s = r.getStages();
+		LocalTime[] t0 = new LocalTime[riders.size()];
+		int q = 0;
+		for(Rider rider: riders.values()){
+			int x = 0;
+			int y = 0;
+			int z = 0;
+			int v = 0;
+			for(Stage n: s){
+				x += getRiderAdjustedElapsedTimeInStage(n.getId(), rider.getRiderId()).getHour();
+				y += getRiderAdjustedElapsedTimeInStage(n.getId(), rider.getRiderId()).getMinute();
+				z += getRiderAdjustedElapsedTimeInStage(n.getId(), rider.getRiderId()).getSecond();
+				v += getRiderAdjustedElapsedTimeInStage(n.getId(), rider.getRiderId()).getNano();
+			}
+			riderLocalTimeHashMap.put(LocalTime.of(x, y, z, v), rider);
+			t0[q] = LocalTime.of(x, y, z, v);
+			q++;
+		}
+		Arrays.sort(t0, new Sort());
+		return t0;
 	}
 
 	@Override
@@ -383,8 +404,12 @@ public class BadCyclingPortal implements CyclingPortalInterface {
 
 	@Override
 	public int[] getRidersGeneralClassificationRank(int raceId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		LocalTime[] t = getGeneralClassificationTimesInRace(raceId);
+		int[] n = new int[t.length];
+		for(int i = 0; i < n.length; i++){
+			n[i] = riderLocalTimeHashMap.get(t[i]).getRiderId();
+		}
+		return n;
 	}
 
 	@Override

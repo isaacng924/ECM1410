@@ -26,4 +26,8 @@ public class Segment {
         return segmentId;
     }
 
+    public SegmentType getType(){
+        return Type;
+    }
+
 }
