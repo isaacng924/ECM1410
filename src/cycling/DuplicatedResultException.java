@@ -15,7 +15,7 @@ public class DuplicatedResultException extends Exception {
 	 * Constructs an instance of the exception with no message
 	 */
 	public DuplicatedResultException() {
-		// do nothing
+		super("The rider has already a result for the stage. Each rider can have only one result per stage");
 	}
 
 	/**

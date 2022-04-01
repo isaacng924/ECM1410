@@ -11,7 +11,7 @@ public class race implements Serializable {
     ArrayList<Stage> stages = new ArrayList<>();
 
     /**
-     * race: create a race entry.
+     * race: Create a race entry.
      * @param name The riderId
      * @param description The stageId
      *

@@ -124,5 +124,14 @@ public class Stage implements Serializable {
     public int getNumOfSegment(){
         return segments.size();
     }
+
+    /**
+     *
+     * @return The name of the stage
+     */
+
+    public String getName() {
+        return stageName;
+    }
 }
 
