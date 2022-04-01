@@ -1,6 +1,8 @@
 package cycling;
 
-public class Team {
+import java.io.Serializable;
+
+public class Team implements Serializable {
     String TeamName;
     String TeamDes;
 

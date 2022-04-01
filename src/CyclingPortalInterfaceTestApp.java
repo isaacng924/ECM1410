@@ -1,4 +1,4 @@
-import cycling.BadCyclingPortal;
+import cycling.CyclingPortal;
 import cycling.BadMiniCyclingPortal;
 import cycling.CyclingPortalInterface;
 import cycling.MiniCyclingPortalInterface;
@@ -24,7 +24,7 @@ public class CyclingPortalInterfaceTestApp {
 		System.out.println("The system compiled and started the execution...");
 
 		MiniCyclingPortalInterface portal = new BadMiniCyclingPortal();
-//		CyclingPortalInterface portal = new BadCyclingPortal();
+//		CyclingPortalInterface portal = new CyclingPortal();
 
 		assert (portal.getRaceIds().length == 0)
 				: "Innitial SocialMediaPlatform not empty as required or not returning an empty array.";

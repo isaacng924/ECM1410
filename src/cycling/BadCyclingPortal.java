@@ -3,9 +3,6 @@ package cycling;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 
 
 /**
@@ -18,130 +15,81 @@ import java.util.HashMap;
  */
 public class BadCyclingPortal implements CyclingPortalInterface {
 
-	static int TeamIdNum = 0;
-	static int RaceNum = 0;
-
-	ArrayList<race> Race = new ArrayList<>();
-	HashMap<Integer, Team> teams = new HashMap<Integer, Team>();
-	HashMap<Integer, Rider> riders = new HashMap<Integer, Rider>();
-	HashMap<Integer, Stage> stageIds = new HashMap<Integer, Stage>();
-	HashMap<Integer, Segment> segmentIds = new HashMap<Integer, Segment>();
-	HashMap<LocalTime, Rider> riderLocalTimeHashMap = new HashMap<LocalTime, Rider>();
-
-
 	@Override
 	public int[] getRaceIds() {
-		int[] raceids = new int[RaceNum];
-		for(int n = 0; n < raceids.length; n++){
-			raceids[n] = Race.get(n).getRaceId();
-		}
-		return raceids;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public int createRace(String name, String description) throws IllegalNameException, InvalidNameException {
-		race newRace = new race(name, description);
-		Race.add(newRace);
-		RaceNum++;
-		return newRace.getRaceId();
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public String viewRaceDetails(int raceId) throws IDNotRecognisedException {
-		String details = null;
-		for(race n: Race){
-			if(n.getRaceId() == raceId){
-				details = n.toString();
-			}
-		}
-		return details;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public void removeRaceById(int raceId) throws IDNotRecognisedException {
-		Race.removeIf(n -> n.getRaceId() == raceId);
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public int getNumberOfStages(int raceId) throws IDNotRecognisedException {
-		int x = 0;
-		for(race n: Race){
-			if(n.getRaceId() == raceId){
-				x = n.getNumberOfStages();
-			}
-		}
-		return x;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public int addStageToRace(int raceId, String stageName, String description, double length, LocalDateTime startTime,
 			StageType type)
 			throws IDNotRecognisedException, IllegalNameException, InvalidNameException, InvalidLengthException {
-		Stage obj = new Stage(stageName, description, length, startTime, type);
-		for(race n: Race){
-			if(n.getRaceId() == raceId){
-				n.addStage(obj);
-			}
-		}
-		stageIds.put(obj.stageId, obj);
-		return obj.getId();
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public int[] getRaceStages(int raceId) throws IDNotRecognisedException {
-		int[] z = new int[getNumberOfStages(raceId)];
-		for (race n : Race) {
-			if (n.getRaceId() == raceId) {
-				int i = 0;
-				for(Stage x :n.getStages()){
-					z[i] = x.getId();
-					i++;
-				}
-			}
-		}
-		return z;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public double getStageLength(int stageId) throws IDNotRecognisedException {
-		return stageIds.get(stageId).getLength();
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public void removeStageById(int stageId) throws IDNotRecognisedException {
-		for(race n: Race){
-			n.removeStage(stageIds.get(stageId));
-		}
-		stageIds.remove(stageId);
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public int addCategorizedClimbToStage(int stageId, Double location, SegmentType type, Double averageGradient,
 			Double length) throws IDNotRecognisedException, InvalidLocationException, InvalidStageStateException,
 			InvalidStageTypeException {
-		Segment obj = new Segment(location, type, averageGradient, length);
-		stageIds.get(stageId).addSegment(obj);
-		segmentIds.put(obj.segmentId, obj);
-		return obj.segmentId;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public int addIntermediateSprintToStage(int stageId, double location) throws IDNotRecognisedException,
 			InvalidLocationException, InvalidStageStateException, InvalidStageTypeException {
-		Segment obj = new Segment(location, SegmentType.SPRINT);
-		stageIds.get(stageId).addSegment(obj);
-		segmentIds.put(obj.segmentId, obj);
-		return obj.segmentId;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public void removeSegment(int segmentId) throws IDNotRecognisedException, InvalidStageStateException {
-		for(race n: Race){
-			for(Stage i: n.getStages()){
-				i.removeSegment(segmentIds.get(segmentId));
-			}
-		}
-		segmentIds.remove(segmentId);
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
@@ -152,187 +100,89 @@ public class BadCyclingPortal implements CyclingPortalInterface {
 
 	@Override
 	public int[] getStageSegments(int stageId) throws IDNotRecognisedException {
-		int[] z = new int[stageIds.get(stageId).getNumOfSegment()];
-		int i = 0;
-		for(Segment x: stageIds.get(stageId).getSegments()){
-			z[i] = x.getSegmentId();
-			i++;
-		}
-		return z;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public int createTeam(String name, String description) throws IllegalNameException, InvalidNameException {
-		Team obj = new Team(name, description);
-		teams.put(TeamIdNum, obj);
-		TeamIdNum++;
-		return TeamIdNum - 1;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public void removeTeam(int teamId) throws IDNotRecognisedException {
-		teams.remove(teamId);
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public int[] getTeams() {
-		int[] TeamList = new int[teams.size()];
-		int n = 0;
-		for(int i: teams.keySet()){
-			TeamList[n] = i;
-			n++;
-		}
-		return TeamList;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public int[] getTeamRiders(int teamId) throws IDNotRecognisedException {
-		int NumberOfRiders = 0;
-		for (Rider i: riders.values()){
-			if (i.getTeamID() == teamId){
-				NumberOfRiders++;
-			}
-		}
-		int[] TeamRiders = new int[NumberOfRiders];
-		int x = 0;
-		for (Rider i: riders.values()){
-			if (i.getTeamID() == teamId){
-				TeamRiders[x] = i.getTeamID();
-			}
-			x++;
-		}
-		return TeamRiders;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public int createRider(int teamID, String name, int yearOfBirth)
 			throws IDNotRecognisedException, IllegalArgumentException {
-		Rider obj = new Rider(teamID, name, yearOfBirth);
-		riders.put(obj.getRiderId(), obj);
-		return obj.getRiderId();
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public void removeRider(int riderId) throws IDNotRecognisedException {
-		riders.remove(riderId);
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public void registerRiderResultsInStage(int stageId, int riderId, LocalTime... checkpoints)
 			throws IDNotRecognisedException, DuplicatedResultException, InvalidCheckpointsException,
 			InvalidStageStateException {
-		riders.get(riderId).addStageTime(stageId, checkpoints);
-		StageResult r = new StageResult(riderId, stageId, checkpoints);
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public LocalTime[] getRiderResultsInStage(int stageId, int riderId) throws IDNotRecognisedException {
-		return riders.get(riderId).getStageTime(stageId);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public LocalTime getRiderAdjustedElapsedTimeInStage(int stageId, int riderId) throws IDNotRecognisedException {
-		StageResult r = StageResult.getResult(stageId, riderId);
-		LocalTime[] t = r.adjustedCheckpoints();
-		LocalTime[] t2 = r.getTime();
-		return r.getElapsed(t2[0], t[t.length-1]);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public void deleteRiderResultsInStage(int stageId, int riderId) throws IDNotRecognisedException {
-		riders.get(riderId).removeStageTime(stageId);
+		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public int[] getRidersRankInStage(int stageId) throws IDNotRecognisedException {
-		StageResult[] results = StageResult.getResultInStage(stageId);
-		int[] RiderRanks = new int[results.length];
-		Arrays.fill(RiderRanks, -1);
-		for(StageResult r: results){
-			for(int n = 0; n < RiderRanks.length; n++){
-				if(RiderRanks[n] == -1){
-					RiderRanks[n] = r.getRider();
-					break;
-				}
-				else if(r.getTotalElapsed().isBefore(StageResult.getResult(stageId, RiderRanks[n]).getTotalElapsed())){
-					int t;
-					int p = r.getRider();
-					for(int j = n; j < RiderRanks.length; j++){
-						t= RiderRanks[j];
-						RiderRanks[j] = p;
-						p = t;
-						if(p == -1){
-							break;
-						}
-					}
-					break;
-				}
-			}
-		}
-		return RiderRanks;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public LocalTime[] getRankedAdjustedElapsedTimesInStage(int stageId) throws IDNotRecognisedException {
-		LocalTime[] t = new	LocalTime[riders.size()];
-		int n = 0;
-		int[] x = getRidersRankInStage(stageId);
-		for(Rider r: riders.values()){
-			t[n] = getRiderAdjustedElapsedTimeInStage(stageId, x[n]);
-			n++;
-		}
-
-		return t;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public int[] getRidersPointsInStage(int stageId) throws IDNotRecognisedException {
-		int[] RiderPoints = new int[getRidersRankInStage(stageId).length];
-		StageType n = stageIds.get(stageId).getStageType();
-		switch (n){
-			case FLAT -> {
-				int[] FlatPoints = new int[]{50, 30, 20, 18, 16, 14, 12, 10, 8, 7, 6, 5, 4, 3, 2};
-				for(int i = 0; i < 15; i++){
-					RiderPoints[i] = FlatPoints[i];
-				}
-				for(int i = 15; i < getRidersRankInStage(stageId).length; i++){
-					RiderPoints[i] = 0;
-				}
-				break;
-			}
-			case MEDIUM_MOUNTAIN -> {
-				int[] MediumPoints = new int[]{30, 25, 22, 19, 17, 15, 13, 11, 9, 7, 6, 5, 4, 3, 2};
-				for(int i = 0; i < 15; i++){
-					RiderPoints[i] = MediumPoints[i];
-				}
-				for(int i = 15; i < getRidersRankInStage(stageId).length; i++){
-					RiderPoints[i] = 0;
-				}
-				break;
-			}
-			case HIGH_MOUNTAIN -> {
-				int[] HighPoints = new int[]{20, 17, 15, 13, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
-				for(int i = 0; i < 15; i++){
-					RiderPoints[i] = HighPoints[i];
-				}
-				for(int i = 15; i < getRidersRankInStage(stageId).length; i++){
-					RiderPoints[i] = 0;
-				}
-				break;
-			}
-			case TT -> {
-				int[] TTPoints = new int[]{20, 17, 15, 13, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
-				for(int i = 0; i < 15; i++){
-					RiderPoints[i] = TTPoints[i];
-				}
-				for(int i = 15; i < getRidersRankInStage(stageId).length; i++){
-					RiderPoints[i] = 0;
-				}
-			}
-
-		}
-		return RiderPoints;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -367,27 +217,8 @@ public class BadCyclingPortal implements CyclingPortalInterface {
 
 	@Override
 	public LocalTime[] getGeneralClassificationTimesInRace(int raceId) throws IDNotRecognisedException {
-		race r = Race.get(raceId);
-		Stage[] s = r.getStages();
-		LocalTime[] t0 = new LocalTime[riders.size()];
-		int q = 0;
-		for(Rider rider: riders.values()){
-			int x = 0;
-			int y = 0;
-			int z = 0;
-			int v = 0;
-			for(Stage n: s){
-				x += getRiderAdjustedElapsedTimeInStage(n.getId(), rider.getRiderId()).getHour();
-				y += getRiderAdjustedElapsedTimeInStage(n.getId(), rider.getRiderId()).getMinute();
-				z += getRiderAdjustedElapsedTimeInStage(n.getId(), rider.getRiderId()).getSecond();
-				v += getRiderAdjustedElapsedTimeInStage(n.getId(), rider.getRiderId()).getNano();
-			}
-			riderLocalTimeHashMap.put(LocalTime.of(x, y, z, v), rider);
-			t0[q] = LocalTime.of(x, y, z, v);
-			q++;
-		}
-		Arrays.sort(t0, new Sort());
-		return t0;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -404,12 +235,8 @@ public class BadCyclingPortal implements CyclingPortalInterface {
 
 	@Override
 	public int[] getRidersGeneralClassificationRank(int raceId) throws IDNotRecognisedException {
-		LocalTime[] t = getGeneralClassificationTimesInRace(raceId);
-		int[] n = new int[t.length];
-		for(int i = 0; i < n.length; i++){
-			n[i] = riderLocalTimeHashMap.get(t[i]).getRiderId();
-		}
-		return n;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
